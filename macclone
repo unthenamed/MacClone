@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# CONFIG #
+AP='Android_WIFI'
+PAGE='aysila.net/status'
+BROWSER='firefox'
+SUCCES='mac.txt'
+MAC='maclist.txt'
+# END CONFIG #
+
+for M in $(<$MAC)
+do
+  if [[ "${M:0:1}" != "#" ]]
+  then
+bash nm -m $M -a $AP -p $PAGE -b $BROWSER -s $SUCCES
+  fi
+done
+exit 0

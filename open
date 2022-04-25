@@ -1,0 +1,24 @@
+
+MAC='aysila.txt'
+
+for M in $(<$MAC)
+do
+  if [[ "${M:0:1}" != "#" ]]
+  then
+
+	wget -q --spider http://google.com
+	if [ $? -eq 0 ]; 
+		then
+			clear
+			echo "ONLINE" 
+
+		else
+			clear
+			echo "Koneksi terputus"
+			
+
+	fi
+
+  fi
+done
+exit 0

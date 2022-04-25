@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# CONFIG #
+AP='Android_WIFI'
+MAC='aysila.txt'
+# END CONFIG #
+date=$(date "+DATE: %D%nTIME: %T")
+
+for M in $(<$MAC)
+do
+  if [[ "${M:0:1}" != "#" ]]
+  then
+
+	wget -q --spider http://google.com
+	if [ $? -eq 0 ]; 
+		then
+			clear
+			echo "ONLINE" 
+			echo "$date"
+			speedtest-cli 
+			sleep 8
+			
+		else
+			clear
+			echo "Koneksi terputus"
+			echo "Menyambungkan koneksi ......"
+			date "+DATE: %D TIME: %T"
+			nmcli connection modify $AP wifi.cloned-mac-address $M
+			nmcli connection up $AP
+	fi
+
+  fi
+done
+bash check
+exit 0

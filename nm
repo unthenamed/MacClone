@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# GET OPTIONS #
+while getopts ":a:s:m:b:p:" OPTION
+do
+  case $OPTION in
+    a)
+      AP="$OPTARG";;
+    s)
+      SAVE="$OPTARG";;
+    m)
+     MAC="$OPTARG";;
+    b)
+      BROWSER="$OPTARG";;
+    p)
+      PAGE="$OPTARG";;
+  esac
+done
+# END OF GET OPTIONS #
+
+# COLORS #
+RED='\033[1;31m'
+GRN='\033[1;32m'
+YEL='\033[1;33m'
+BLU='\033[1;34m'
+TUR='\033[1;36m'
+WHT='\033[1;37m'
+DEF='\033[0m'
+# END OF COLORS #
+
+# ARGUMENT #
+SUCCES="Alamat $MAC  memiliki akses internet"
+USER="Masukan User ID yang ada di $PAGE  ... !"
+OFF="Alamat $MAC tidak terdaftar ... !"
+WAIT="Menyambungkan ulang ....... "
+OK=" Mac Terdaftar "
+# END ARGUMENT #
+
+#exc
+nmcli connection modify $AP wifi.cloned-mac-address $MAC
+nmcli connection up $AP
+sleep 1
+wget -q --spider http://google.com
+if [ $? -eq 0 ]; 
+then
+clear
+	echo -e $YEL"============= $OK ============"$DEF
+	cat $SAVE
+	echo -e $YEL"========================================"$DEF
+	echo -e $BLU"$SUCCES"$DEF
+	#speedtest-cli
+	$BROWSER $PAGE &
+	echo -e $BLU"$USER"$DEF
+	read -p 'User: ' user
+	echo "USERID : $user" >> $SAVE
+        echo "$MAC" >> $SAVE
+        echo "" >> $SAVE
+	echo -e $TUR"$WAIT"$DEF
+else
+clear
+	echo -e $YEL"============= $OK ============"$DEF
+	cat $SAVE
+	echo -e $YEL"========================================"$DEF
+	echo -e $RED"$OFF"$DEF
+	echo -e $TUR"$WAIT"$DEF
+fi
+exit 0
